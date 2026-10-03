@@ -1,0 +1,41 @@
+kind: wasmer.io/App.v0
+name: restaurants
+app_id: da_2qMIbt8UqjyZ
+owner: idkrealyyea
+package: .
+locality:
+  regions:
+  - fr-roub1
+env:
+  NODE_ENV: production
+  TRUST_PROXY: '1'
+capabilities:
+  instaboot:
+    mode: null
+    requests:
+    - path: /
+    - path: /api/healthz
+    max_age: 12h
+  database:
+    engine: postgres
+annotations:
+  anybuild.run/config:
+    commands:
+      start: node server.js
+    edgejs_enable: true
+    edgejs_precompile: true
+    name: out
+    node_install_inputs:
+    - package.json
+    node_package_manager: npm
+    node_package_name: restaurants-platform
+    node_remove_native_binaries: true
+    node_server: express
+    services:
+    - engine: postgres
+      name: database
+    npm_version: '11'
+  anybuild.run/provider: node
+  anybuild.run/version: 0.32.0
+  wasmer.io/version: 7.5.0
+enableDatabase: true
