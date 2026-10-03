@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Restivo Menu"
+description = "A polished mobile-first restaurant menu experience inspired by Menux, showing dishes, categories, search, product details, and a responsive order cart."
+version = "1.0.0"
+id = "artifacts/restivo-menu"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22683
+
+[services.development]
+run = "pnpm --filter @workspace/restivo-menu run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/restivo-menu", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/restivo-menu/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22683"
+BASE_PATH = "/"
