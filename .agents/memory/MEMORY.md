@@ -1,0 +1,1 @@
+- [Guest menu implementation constraint](guest-menu-implementation.md) — keep the Restivo guest menu framework-free and use vanilla HTML, CSS, and JavaScript.

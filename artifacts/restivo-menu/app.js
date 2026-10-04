@@ -10,6 +10,10 @@ const copy = {
     ratingLabel: "من 280 تقييم",
     deliveryTime: "20–30 دقيقة",
     location: "يافا، فلسطين",
+    coverLabel: "صور المطعم",
+    previousCover: "الصورة السابقة",
+    nextCover: "الصورة التالية",
+    showCover: "عرض الصورة",
     menuKicker: "من مطبخنا إلى مائدتك",
     menuTitle: "قائمة اليوم",
     menuDescription: "أطباق طازجة، مكوّنات موسمية، ونكهات تُشبه البيت.",
@@ -71,6 +75,10 @@ const copy = {
     ratingLabel: "from 280 reviews",
     deliveryTime: "20–30 min",
     location: "Jaffa, Palestine",
+    coverLabel: "Restaurant cover photos",
+    previousCover: "Previous cover photo",
+    nextCover: "Next cover photo",
+    showCover: "Show cover photo",
     menuKicker: "From our kitchen to your table",
     menuTitle: "Today’s menu",
     menuDescription: "Fresh plates, seasonal produce, and flavors that feel like home.",
@@ -124,11 +132,11 @@ const copy = {
 };
 
 const categories = [
-  { id: "all", copyKey: "all" },
-  { id: "mezze", copyKey: "mezze" },
-  { id: "mains", copyKey: "mains" },
-  { id: "sweets", copyKey: "sweets" },
-  { id: "drinks", copyKey: "drinks" },
+  { id: "all", copyKey: "all", emoji: "🍽️" },
+  { id: "mezze", copyKey: "mezze", emoji: "🥗" },
+  { id: "mains", copyKey: "mains", emoji: "🍢" },
+  { id: "sweets", copyKey: "sweets", emoji: "🍰" },
+  { id: "drinks", copyKey: "drinks", emoji: "🥤" },
 ];
 
 const dishes = [
@@ -285,6 +293,25 @@ const dishes = [
   },
 ];
 
+const coverSlides = [
+  {
+    image: "./images/restivo-food-table.jpg",
+    alt: { ar: "مائدة دار يارا", en: "A table at Dar Yara" },
+  },
+  {
+    image: dishes.find((dish) => dish.id === "fattoush")?.image || "./images/restivo-food-table.jpg",
+    alt: { ar: "فتوش طازج من مطبخ دار يارا", en: "Fresh fattoush from Dar Yara" },
+  },
+  {
+    image: dishes.find((dish) => dish.id === "shish-taouk")?.image || "./images/restivo-food-table.jpg",
+    alt: { ar: "شيش طاووق مشوي على الفحم", en: "Shish taouk grilled over charcoal" },
+  },
+  {
+    image: dishes.find((dish) => dish.id === "kunafa")?.image || "./images/restivo-food-table.jpg",
+    alt: { ar: "كنافة ساخنة", en: "Warm kunafa" },
+  },
+];
+
 const state = {
   language: "ar",
   category: "all",
@@ -297,6 +324,9 @@ const state = {
   cartOpen: false,
   previousFocus: null,
   toastTimer: null,
+  coverIndex: 0,
+  coverTimer: null,
+  coverPaused: false,
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -338,11 +368,97 @@ function updateStaticCopy() {
   $("#shareButton").setAttribute("aria-label", getCopy("share"));
   $("#openCartButton").setAttribute("aria-label", getCopy("order"));
   $("#desktopCart").setAttribute("aria-label", getCopy("yourOrder"));
+  $("#categoryStrip").setAttribute("aria-label", getCopy("categoryLabel"));
+  $("#coverCarousel").setAttribute("aria-label", getCopy("coverLabel"));
+  $("#coverPrevious").setAttribute("aria-label", getCopy("previousCover"));
+  $("#coverNext").setAttribute("aria-label", getCopy("nextCover"));
+  $$(".cover-dot").forEach((dot) => {
+    dot.setAttribute("aria-label", `${getCopy("showCover")} ${Number(dot.dataset.coverIndex) + 1}`);
+  });
+  $$(".cover-slide img").forEach((image, index) => {
+    if (coverSlides[index]) image.alt = localize(coverSlides[index].alt);
+  });
 
   const search = $("#menuSearch");
   search.placeholder = getCopy("searchPlaceholder");
   search.setAttribute("aria-label", getCopy("searchLabel"));
   search.value = state.query;
+}
+
+function showCover(index) {
+  state.coverIndex = (index + coverSlides.length) % coverSlides.length;
+  $$(".cover-slide").forEach((slide, slideIndex) => {
+    const active = slideIndex === state.coverIndex;
+    slide.classList.toggle("is-active", active);
+    slide.setAttribute("aria-hidden", String(!active));
+  });
+  $$(".cover-dot").forEach((dot, dotIndex) => {
+    const active = dotIndex === state.coverIndex;
+    dot.classList.toggle("is-active", active);
+    if (active) dot.setAttribute("aria-current", "true");
+    else dot.removeAttribute("aria-current");
+  });
+}
+
+function startCoverAutoplay() {
+  window.clearInterval(state.coverTimer);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  state.coverTimer = window.setInterval(() => {
+    if (!state.coverPaused && !document.hidden) showCover(state.coverIndex + 1);
+  }, 5200);
+}
+
+function navigateCover(index) {
+  showCover(index);
+  startCoverAutoplay();
+}
+
+function initializeCoverCarousel() {
+  const carousel = $("#coverCarousel");
+  $("#coverTrack").innerHTML = coverSlides.map((slide, index) => `
+    <div class="cover-slide${index === 0 ? " is-active" : ""}" aria-hidden="${index !== 0}"
+      aria-roledescription="slide" aria-label="${index + 1} / ${coverSlides.length}">
+      <img src="${escapeHTML(slide.image)}" alt="${escapeHTML(localize(slide.alt))}"
+        ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} />
+    </div>`).join("");
+  $("#coverPagination").innerHTML = coverSlides.map((_, index) => `
+    <button class="cover-dot${index === 0 ? " is-active" : ""}" type="button"
+      data-cover-index="${index}" aria-label="${escapeHTML(getCopy("showCover"))} ${index + 1}"
+      ${index === 0 ? 'aria-current="true"' : ""}></button>`).join("");
+  showCover(0);
+
+  carousel.addEventListener("click", (event) => {
+    const control = event.target.closest("[data-cover-step], [data-cover-index]");
+    if (!control) return;
+    if (control.hasAttribute("data-cover-step")) {
+      navigateCover(state.coverIndex + Number(control.dataset.coverStep));
+    } else {
+      navigateCover(Number(control.dataset.coverIndex));
+    }
+  });
+  carousel.addEventListener("pointerenter", () => { state.coverPaused = true; });
+  carousel.addEventListener("pointerleave", () => { state.coverPaused = false; });
+  carousel.addEventListener("focusin", () => { state.coverPaused = true; });
+  carousel.addEventListener("focusout", (event) => {
+    if (!carousel.contains(event.relatedTarget)) state.coverPaused = false;
+  });
+
+  let touchStartX = null;
+  carousel.addEventListener("touchstart", (event) => {
+    touchStartX = event.changedTouches[0]?.clientX ?? null;
+  }, { passive: true });
+  carousel.addEventListener("touchend", (event) => {
+    if (touchStartX === null) return;
+    const distance = event.changedTouches[0].clientX - touchStartX;
+    touchStartX = null;
+    if (Math.abs(distance) > 45) navigateCover(state.coverIndex + (distance < 0 ? 1 : -1));
+  }, { passive: true });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) window.clearInterval(state.coverTimer);
+    else startCoverAutoplay();
+  });
+  startCoverAutoplay();
 }
 
 function categoryMarkup() {
@@ -354,6 +470,7 @@ function categoryMarkup() {
     return `
       <button class="category-pill${active ? " active" : ""}" type="button"
         data-category="${category.id}" aria-pressed="${active}">
+        <span class="category-emoji" aria-hidden="true">${category.emoji}</span>
         <span>${escapeHTML(getCopy(category.copyKey))}</span>
         <span class="category-count">${count}</span>
       </button>`;
@@ -364,14 +481,17 @@ function dishMarkup(dish) {
   const name = localize(dish.name);
   const hasOptions = dish.options.length > 0;
   const quickLabel = hasOptions ? getCopy("options") : getCopy("addToOrder");
-  const tag = dish.tag ? `<span class="dish-tag">${escapeHTML(getCopy(dish.tag))}</span>` : "";
+  const tagEmoji = dish.tag === "bestSeller" ? "🔥" : "🌿";
+  const tag = dish.tag
+    ? `<span class="dish-tag"><span aria-hidden="true">${tagEmoji}</span>${escapeHTML(getCopy(dish.tag))}</span>`
+    : "";
   const quickIcon = `
     <svg viewBox="0 0 20 20" aria-hidden="true">
       <path d="M10 4v12M4 10h12" />
     </svg>`;
 
   return `
-    <article class="dish-card">
+      <article class="dish-card dish-row">
       <button class="dish-photo" type="button" data-open-dish="${dish.id}" aria-label="${escapeHTML(name)}">
         <img src="${escapeHTML(dish.image)}" alt="${escapeHTML(name)}" loading="lazy" />
         ${tag}
@@ -425,7 +545,25 @@ function renderMenu() {
       </div>`;
     return;
   }
-  grid.innerHTML = visibleDishes.map(dishMarkup).join("");
+  const visibleSections = categories
+    .filter((category) => category.id !== "all")
+    .map((category) => ({
+      ...category,
+      items: visibleDishes.filter((dish) => dish.category === category.id),
+    }))
+    .filter((category) => category.items.length > 0);
+
+  grid.innerHTML = visibleSections.map((category) => `
+    <section class="dish-section" aria-labelledby="section-${category.id}">
+      <div class="dish-section-heading">
+        <h3 id="section-${category.id}">
+          <span class="section-emoji" aria-hidden="true">${category.emoji}</span>
+          <span>${escapeHTML(getCopy(category.copyKey))}</span>
+        </h3>
+        <span class="section-count">${category.items.length}</span>
+      </div>
+      <div class="dish-list">${category.items.map(dishMarkup).join("")}</div>
+    </section>`).join("");
 }
 
 function getDish(dishId) {
@@ -886,17 +1024,12 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("error", (event) => {
   const image = event.target;
   if (!(image instanceof HTMLImageElement) || image.dataset.fallback === "true") return;
-  if (!image.matches(".dish-photo img, .modal-image img")) return;
+  if (!image.matches(".dish-photo img, .modal-image img, .cover-slide img")) return;
   image.dataset.fallback = "true";
   image.src = "./images/restivo-food-table.jpg";
 }, true);
 
-const initialHeroImage = $(".hero-art img");
-initialHeroImage.addEventListener("error", () => {
-  initialHeroImage.src = "./images/restivo-food-table.jpg";
-  initialHeroImage.dataset.fallback = "true";
-}, { once: true });
-
 updateStaticCopy();
+initializeCoverCarousel();
 renderMenu();
 renderCart();

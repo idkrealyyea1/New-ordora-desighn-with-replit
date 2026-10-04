@@ -56,25 +56,38 @@
 
       <main>
         <section class="restaurant-hero" aria-labelledby="restaurantName">
-          <div class="hero-panel">
-            <div class="hero-copy">
+          <div class="restaurant-cover" id="coverCarousel" role="region" aria-roledescription="carousel" aria-label="صور المطعم">
+            <div class="cover-track" id="coverTrack">
+              <div class="cover-slide is-active" aria-hidden="false">
+                <img src="./images/restivo-food-table.jpg" alt="سفرة دار يارا" fetchpriority="high" />
+              </div>
+            </div>
+            <div class="cover-shade" aria-hidden="true"></div>
+            <button class="cover-control cover-previous" id="coverPrevious" type="button" data-cover-step="-1" aria-label="الصورة السابقة" aria-controls="coverTrack">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4.5-5.5 5.5 5.5 5.5" /></svg>
+            </button>
+            <button class="cover-control cover-next" id="coverNext" type="button" data-cover-step="1" aria-label="الصورة التالية" aria-controls="coverTrack">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" /></svg>
+            </button>
+            <div class="cover-pagination" id="coverPagination" role="group" aria-label="صور الغلاف"></div>
+          </div>
+          <div class="restaurant-profile">
+            <a class="restaurant-logo-overlap" href="./" aria-label="Restivo">
+              <span class="cover-logo-symbol" aria-hidden="true">R</span>
+              <span class="cover-logo-name" aria-hidden="true">restivo</span>
+            </a>
+            <div class="restaurant-profile-copy">
               <p class="eyebrow"><span class="open-dot" aria-hidden="true"></span><span data-copy="openNow">مفتوح الآن</span></p>
               <h1 class="hero-title" id="restaurantName">دار يارا</h1>
               <p class="hero-description" data-copy="restaurantDescription">
                 نكهات من البيت، تُحضّر على مهل وتُقدّم بكل حب.
               </p>
               <div class="restaurant-meta">
-                <span class="meta-item"><svg class="rating-star" viewBox="0 0 18 18" aria-hidden="true"><path d="m9 1.8 2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L1.8 7l5-.7L9 1.8Z" /></svg><strong>4.9</strong><span data-copy="ratingLabel">من 280 تقييم</span></span>
-                <span class="meta-separator" aria-hidden="true"></span>
-                <span class="meta-item"><span class="meta-clock" aria-hidden="true"></span><span data-copy="deliveryTime">20–30 دقيقة</span></span>
-                <span class="meta-separator" aria-hidden="true"></span>
-                <span class="meta-item" data-copy="location">يافا، فلسطين</span>
+                <span class="meta-item"><span class="meta-emoji" aria-hidden="true">⭐</span><strong>4.9</strong><span data-copy="ratingLabel">من 280 تقييم</span></span>
+                <span class="meta-item"><span class="meta-emoji" aria-hidden="true">⏱️</span><span data-copy="deliveryTime">20–30 دقيقة</span></span>
+                <span class="meta-item"><span class="meta-emoji" aria-hidden="true">📍</span><span data-copy="location">يافا، فلسطين</span></span>
               </div>
             </div>
-            <div class="hero-art" aria-hidden="true">
-              <img src="./images/restivo-food-table.jpg" alt="" fetchpriority="high" />
-            </div>
-            <span class="hero-stamp" aria-hidden="true"><span>من</span><strong>البيت</strong></span>
           </div>
         </section>
 
@@ -93,7 +106,6 @@
               </label>
             </div>
             <nav class="category-strip" id="categoryStrip" aria-label="Menu categories"></nav>
-            <div class="featured-ribbon"><span data-copy="popularRibbon">اختيارات أحبّها ضيوفنا</span></div>
             <div class="dish-grid" id="dishGrid" aria-live="polite" aria-busy="false"></div>
           </section>
 
