@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta name="theme-color" content="#c73d18">
-  <meta name="description" content="Restivo pricing: $19.99 per month, 0% commission. Digital menu, QR, online ordering, WhatsApp and dashboard. 7-day trial.">
+  <meta name="theme-color" content="#ed6b4c">
+  <meta name="description" content="One clear Restivo plan for restaurant menus, QR ordering, WhatsApp and dashboard tools. 7-day trial, with current pricing shown live.">
   <link rel="canonical" href="/pricing.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Pricing — $19.99/month, 0% Commission | Restivo">
-  <meta property="og:description" content="Restivo pricing: $19.99 per month, 0% commission. Digital menu, QR, online ordering, WhatsApp and dashboard. 7-day trial.">
+  <meta property="og:title" content="Simple Pricing | Restivo">
+  <meta property="og:description" content="One clear Restivo plan for restaurant menus, QR ordering, WhatsApp and dashboard tools. 7-day trial, with current pricing shown live.">
   <meta property="og:image" content="/icons/icon-512.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
-  <title>Pricing — $19.99/month, 0% Commission | Restivo</title>
+  <title>Simple Pricing | Restivo</title>
   <link rel="stylesheet" href="/fonts/fonts.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/marketing.css">
@@ -79,40 +79,36 @@
     </div>
   </nav>
   <main>
-    <section class="mk-section">
+    <section class="mk-price-page">
       <div class="mk-container">
-        <div class="mk-kicker">Restivo</div>
-        <h1 class="mk-section-title" style="font-size:clamp(1.9rem,3vw,2.4rem)">Simple pricing — $19.99/month</h1>
-        <p class="mk-muted" style="max-width:62ch">One plan, everything included. No commission, no hidden fees. Price editable from owner panel.</p>
-      </div>
-    </section>
-    
-    <section class="mk-section" style="background: var(--surface-muted); border-top:1px solid var(--border); border-bottom:1px solid var(--border)">
-      <div class="mk-container mk-pricing">
-        <div class="mk-price-card">
-          <div class="mk-kicker">Restivo</div>
-          <div class="mk-price-amount"><span id="mk-price">$19.99</span><sup id="mk-price-period">/month</sup></div>
-          <p class="muted small">Billed monthly. Keep 100% of your orders — Talabat-style 20% commission would be $600 on $3000 sales; you pay $19.99 flat.</p>
-          <ul style="text-align:left; max-width:420px; margin:14px auto; padding-left:18px; line-height:1.7">
-            <li>Digital menu & QR code</li>
-            <li>Online ordering + WhatsApp flow</li>
-            <li>Dashboard: menu, orders, bookings, analytics</li>
-            <li>Your branding, logo, cover, colors, currency</li>
-            <li>QR generator & share link</li>
-            <li>7-day trial — we set expiry via <code>subscription_ends_at</code></li>
-          </ul>
-          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
-            <a class="btn" href="/contact.html">Get your restaurant online</a>
-            <a class="btn btn-outline" href="/app/">Try demo</a>
+        <div class="mk-price-layout">
+          <div class="mk-price-copy">
+            <span class="mk-kicker" data-i18n="navPricing">Pricing</span>
+            <h1 class="mk-section-title" data-i18n="pricingTitle">Simple pricing</h1>
+            <p class="mk-muted" data-i18n="pricingDesc">One plan. 0% commission. Keep 100% of your orders.</p>
+            <ul class="mk-plan-list">
+              <li data-i18n="pricingFeat1">Digital menu &amp; QR</li>
+              <li data-i18n="pricingFeat2">Online ordering + WhatsApp</li>
+              <li data-i18n="pricingFeat3">Dashboard, orders &amp; bookings</li>
+              <li data-i18n="pricingFeat4">Analytics &amp; top items</li>
+              <li data-i18n="pricingFeat5">Your branding, colors, logo &amp; cover</li>
+            </ul>
           </div>
-          <p class="small muted mt-1">Need multi-restaurant? Each slug is a separate tenant, billed separately.</p>
+          <aside class="mk-plan-card" aria-labelledby="mk-plan-brand-name">
+            <div class="mk-plan-brand">
+              <span class="mk-plan-brand-mark" aria-hidden="true">R</span>
+              <span id="mk-plan-brand-name" data-i18n="brand">Restivo</span>
+            </div>
+            <div class="mk-price-amount" dir="ltr">
+              <span id="mk-price">$19.99</span><sup id="mk-price-period">/month</sup>
+            </div>
+            <p class="mk-plan-trial" data-i18n="pricingTrial">7-day trial • Cancel anytime • Price editable from owner panel</p>
+            <div class="mk-plan-actions">
+              <a class="mk-plan-primary" href="/contact.html" data-i18n="pricingCTA">Get Your Restaurant Online</a>
+              <a class="mk-plan-secondary" href="/app/" data-i18n="navDemo">See live restaurant</a>
+            </div>
+          </aside>
         </div>
-      </div>
-    </section>
-    <section class="mk-section">
-      <div class="mk-container" style="max-width:640px; text-align:center">
-        <h2 class="mk-section-title">FAQ about pricing</h2>
-        <p class="muted">Price is stored in <code>platform_settings.pricing_cents</code> and shown everywhere from <code>GET /api/pricing</code>. Owner changes it at <code>/owner.html</code> pricing card — no redeploy.</p>
       </div>
     </section>
  
