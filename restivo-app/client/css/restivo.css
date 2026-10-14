@@ -435,3 +435,72 @@ html[dir="ltr"] .logo-track{animation-name:logos-ltr}
   .product-sheet{transform:translate(-50%,calc(100% + var(--drag)))}
   .product-sheet.open{transform:translate(-50%,var(--drag))}
 }
+
+/* ---- Landing refresh: cleaner hierarchy, same Restivo palette ---- */
+#top .site-header{
+  position:sticky;inset:auto;top:0;z-index:50;padding:9px 0;
+  background:rgba(248,240,223,.94);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+#top .header-row{min-height:48px}
+#top .logo-mark-img{width:38px;height:38px;border:1px solid var(--line);box-shadow:none}
+#top .nav{gap:clamp(16px,2.4vw,30px)}
+#top .nav a{transition:color .2s ease}
+#top .hero{min-height:0;padding:58px 0 72px}
+#top .hero .page-grid{opacity:.28}
+#top .hero-grid{grid-template-columns:minmax(0,1fr) minmax(320px,430px);gap:clamp(28px,5vw,64px)}
+#top .strip{border:1px solid rgba(248,240,223,.12);border-radius:16px;box-shadow:0 12px 28px rgba(31,52,57,.08)}
+#top .hero h1{font-size:clamp(44px,6vw,76px);line-height:1.08}
+#top .hero-desc{max-width:560px;font-size:17px;line-height:1.85}
+#top .primary-btn,#top .dark-btn,#top .coral-btn{
+  min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border-radius:12px;box-shadow:0 8px 20px rgba(31,52,57,.14);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+#top .primary-btn:hover,#top .dark-btn:hover,#top .coral-btn:hover{
+  transform:translateY(-2px);box-shadow:0 12px 25px rgba(31,52,57,.19);filter:brightness(1.03)}
+#top .text-btn{min-height:44px;display:inline-flex;align-items:center;gap:7px}
+#top .hero-actions{gap:12px}
+#top .phone{border-width:6px;border-radius:34px;box-shadow:0 24px 55px rgba(31,52,57,.18),8px 8px 0 var(--yellow)}
+#top .qr-card{border-radius:14px;box-shadow:0 12px 26px rgba(31,52,57,.16)}
+#top .order-float{box-shadow:0 16px 30px rgba(31,52,57,.22)}
+#top .story,#top .how,#top .features,#top .faq,#top .logos{padding:88px 0}
+#top .story-art .food-card{border-width:6px;border-radius:22px;box-shadow:0 14px 30px rgba(31,52,57,.13)}
+#top .owner-card{border-width:6px;border-radius:18px}
+#top .step{border-top-color:rgba(31,52,57,.12)}
+#top .feature{min-height:215px;padding:26px;border:1px solid rgba(31,52,57,.06);border-radius:18px}
+#top .feature-copy{margin-top:38px}
+#top .pricing{padding:88px 0}
+#top .pricing-card{border:1px solid rgba(248,240,223,.1);border-radius:22px;box-shadow:0 22px 54px rgba(12,37,39,.2)}
+#top .pricing-card .coral-btn{border-radius:12px}
+#top .faq-q{padding:20px 0}
+#top .faq-q:focus-visible,#top .primary-btn:focus-visible,#top .dark-btn:focus-visible,
+#top .coral-btn:focus-visible,#top .text-btn:focus-visible,#top .mobile-menu:focus-visible{
+  outline:3px solid var(--coral);outline-offset:3px}
+#top .final{padding:88px 20px}
+#top .footer{border-top:1px solid rgba(248,240,223,.1)}
+#top .mobile-nav{z-index:55;border:1px solid var(--line);border-radius:0 0 18px 18px;box-shadow:0 18px 38px rgba(31,52,57,.14)}
+
+@media(max-width:900px){
+  #top .hero{padding:42px 0 58px}
+  #top .hero-grid{grid-template-columns:1fr;gap:16px}
+  #top .phone-preview{margin-top:8px}
+  #top .story,#top .how,#top .features,#top .faq,#top .logos,#top .pricing{padding:72px 0}
+}
+@media(max-width:620px){
+  #top .site-header{padding:7px 0}
+  #top .header-row{min-height:44px}
+  #top .hero{padding:34px 0 48px}
+  #top .hero h1{font-size:clamp(39px,11vw,48px);line-height:1.12}
+  #top .hero-desc{font-size:15px}
+  #top .hero-actions{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:4px 8px}
+  #top .hero-actions .dark-btn{grid-column:1/-1}
+  #top .hero-actions .dark-btn,#top .hero-actions .text-btn{width:100%;justify-content:center}
+  #top .hero-actions .text-btn{font-size:12px}
+  #top .feature{min-height:0;padding:22px}
+  #top .feature-copy{margin-top:28px}
+  #top .pricing-card{padding:26px 22px}
+  #top .price strong{font-size:clamp(42px,12vw,56px)}
+  #top .story,#top .how,#top .features,#top .faq,#top .logos,#top .pricing{padding:62px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  #top .primary-btn,#top .dark-btn,#top .coral-btn{transition:none}
+}
